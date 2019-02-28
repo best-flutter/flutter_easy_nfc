@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:typed_data';
 
 class NfcError extends Error{
 
@@ -33,11 +34,11 @@ class BasicTagTechnology{
 
   //// Base
   Future connect() async{
-    await _channel.invokeMethod('connect');
+    return handle(await _channel.invokeMethod('connect'));
   }
 
   Future close() async{
-    await _channel.invokeMethod('close');
+    await handle(await _channel.invokeMethod('close'));
   }
 
 }
@@ -46,48 +47,74 @@ class IsoDep extends BasicTagTechnology{
   IsoDep(MethodChannel channel) : super(channel);
 
   Future<String> transceive(String data) async{
-    return await _channel.invokeMethod('transceive',data);
+    var res = await _channel.invokeMethod('transceive',data);
+    return handle(res);
   }
 }
 
 
+dynamic handle(dynamic res){
+  if(res['code']!=null){
+    throw new NfcError(code: res['code']);
+  }
+  return res['data'];
+}
+
 class MifareClassic extends BasicTagTechnology{
   MifareClassic(MethodChannel channel) : super(channel);
 
-
-
-
   /// For MifareClassic
-  Future authenticateSectorWithKeyA(int sectorIndex, String key){
-
+  Future<bool> authenticateSectorWithKeyA(int sectorIndex, String key) async{
+    return handle(await _channel.invokeMethod("authenticateSectorWithKeyA",{
+      'sectorIndex':sectorIndex,
+      'key':key
+    }));
   }
 
-  Future authenticateSectorWithKeyB(int sectorIndex, String key){
-
+  Future<bool> authenticateSectorWithKeyB(int sectorIndex, String key)async{
+    return handle(await _channel.invokeMethod("authenticateSectorWithKeyB",{
+      'sectorIndex':sectorIndex,
+      'key':key
+    }));
   }
 
-  Future<String> readBlock(int block){
-
+  Future<String> readBlock(int block)async{
+    return handle(await _channel.invokeMethod("readBlock",{
+      'block':block,
+    }));
   }
 
-  Future writeBlock(int block,String data){
-
+  Future writeBlock(int block,String data)async{
+    return handle(await _channel.invokeMethod("writeBlock",{
+      'block':block,
+      'data':data,
+    }));
   }
 
-  Future transfer(int block){
-
+  Future transfer(int block)async{
+    return handle(await _channel.invokeMethod("transfer",{
+      'block':block,
+    }));
   }
 
-  Future restore(int block){
-
+  Future restore(int block)async{
+    return handle(await _channel.invokeMethod("restore",{
+      'block':block,
+    }));
   }
 
-  Future increment(int block,int value){
-
+  Future increment(int block,int value)async{
+    return handle(await _channel.invokeMethod("increment",{
+      'block':block,
+      'value':value
+    }));
   }
 
-  Future decrement(int block,int value){
-
+  Future decrement(int block,int value)async{
+    return handle(await _channel.invokeMethod("decrement",{
+      'block':block,
+      'value':value
+    }));
   }
 }
 

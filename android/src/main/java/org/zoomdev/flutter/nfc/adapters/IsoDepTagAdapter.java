@@ -8,7 +8,6 @@ import android.nfc.tech.TagTechnology;
 public class IsoDepTagAdapter extends AbsNfcTagAdapter<IsoDep> {
 
 
-
     @Override
     public String getTech() {
         return "IsoDep";

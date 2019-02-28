@@ -8,6 +8,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9cd42fc0-156b-4b0b-a88c-1b2521510d0f" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/android/src/main/java/org/zoomdev/flutter/nfc/FlutterEasyNfcPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/org/zoomdev/flutter/nfc/FlutterEasyNfcPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/org/zoomdev/flutter/nfc/adapters/IsoDepTagAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/org/zoomdev/flutter/nfc/adapters/IsoDepTagAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/org/zoomdev/flutter/nfc/adapters/NfcTagAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/org/zoomdev/flutter/nfc/adapters/NfcTagAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/flutter_easy_nfc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_easy_nfc.dart" afterDir="false" />
     </list>
@@ -29,10 +31,22 @@
       <file leaf-file-name="flutter_easy_nfc.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/flutter_easy_nfc.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-918">
-              <caret line="38" column="14" lean-forward="true" selection-start-line="38" selection-start-column="14" selection-end-line="38" selection-end-column="14" />
+            <state relative-caret-position="139">
+              <caret line="80" column="15" selection-start-line="80" selection-start-column="15" selection-end-line="80" selection-end-column="15" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="typed_data.dart" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/working/flutter/bin/cache/pkg/sky_engine/lib/typed_data/typed_data.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="130">
+              <caret line="726" column="71" selection-start-line="726" selection-start-column="65" selection-end-line="726" selection-end-column="71" />
+              <folding>
+                <element signature="e#0#77505#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -41,29 +55,11 @@
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="66" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="66" />
+            <state relative-caret-position="73">
+              <caret line="41" column="29" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="binding.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/working/flutter/packages/flutter/lib/src/widgets/binding.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="374" column="7" selection-start-line="374" selection-start-column="7" selection-end-line="374" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="window.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/working/flutter/bin/cache/pkg/sky_engine/lib/ui/window.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="39" column="5" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -73,6 +69,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>life</find>
+      <find>ByteBuffer</find>
+      <find>Endian</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -89,8 +87,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="65" />
-    <option name="y" value="32" />
+    <option name="x" value="148" />
+    <option name="y" value="28" />
     <option name="width" value="1397" />
     <option name="height" value="839" />
   </component>
@@ -225,7 +223,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="801" y="99" width="1397" height="839" extended-state="0" />
+    <frame x="148" y="28" width="1397" height="839" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
@@ -245,11 +243,11 @@
       <window_info id="Captures" order="2" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2494465" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2494465" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.39919356" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39919356" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="3" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -306,7 +304,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/src/main/java/org/zoomdev/flutter/nfc/AbsNfcTagAdapter.java">
+    <entry file="file://$PROJECT_DIR$/android/src/main/java/org/zoomdev/flutter/nfc/adapters/AbsNfcTagAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
@@ -355,10 +353,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/example/test/widget_test.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#916#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/working/flutter/bin/cache/pkg/sky_engine/lib/typed_data/typed_data.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="726" column="71" selection-start-line="726" selection-start-column="65" selection-end-line="726" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#77505#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="66" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="66" />
+        <state relative-caret-position="73">
+          <caret line="41" column="29" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -367,8 +384,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/flutter_easy_nfc.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-918">
-          <caret line="38" column="14" lean-forward="true" selection-start-line="38" selection-start-column="14" selection-end-line="38" selection-end-column="14" />
+        <state relative-caret-position="139">
+          <caret line="80" column="15" selection-start-line="80" selection-start-column="15" selection-end-line="80" selection-end-column="15" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>

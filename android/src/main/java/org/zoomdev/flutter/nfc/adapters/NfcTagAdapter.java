@@ -8,7 +8,6 @@ import java.io.IOException;
 public interface NfcTagAdapter<BasicTagTechnology> {
 
 
-
     boolean isConnected();
 
     void connect() throws IOException;
