@@ -20,6 +20,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
+    FlutterEasyNfc.isAvailable();
+    FlutterEasyNfc.isEnabled();
+
     FlutterEasyNfc.startup();
     FlutterEasyNfc.onNfcEvent((NfcEvent event) async {
       if (event.tag is IsoDep) {
