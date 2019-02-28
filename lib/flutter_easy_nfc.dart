@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 class NfcError extends Error{
 
@@ -90,29 +92,77 @@ class MifareClassic extends BasicTagTechnology{
 }
 
 
+class AppLifecycleStateObserver extends WidgetsBindingObserver{
+  MethodChannel _channel;
+  AppLifecycleStateObserver(MethodChannel channel):_channel = channel{
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(FlutterEasyNfc._isStartup){
+      if(state == AppLifecycleState.resumed){
+        _channel.invokeMethod("resume");
+      }else if(state == AppLifecycleState.paused){
+        _channel.invokeMethod("pause");
+      }
+    }
+
+  }
+}
+
 class FlutterEasyNfc {
   static const MethodChannel _channel =
       const MethodChannel('flutter_easy_nfc');
 
   static OnNfcEvent _event;
 
+  static bool _inited = false;
+
+  static bool _isStartup = false;
+
+  static AppLifecycleStateObserver _observer = new AppLifecycleStateObserver(_channel);
+
   static void onNfcEvent(OnNfcEvent event){
     _event = event;
   }
 
-  static Future  startup() async  {
-    _channel.setMethodCallHandler(handler);
-    await _channel.invokeMethod('startup');
+  /// is nfc available ?
+  static Future<bool> isAvailable(){
+    if(Platform.isAndroid){
+      return _channel.invokeMethod('isAvailable');
+    }
+    return new Future.value(false);
   }
 
-//
-//  static Future<String> apdu(String command) async{
-//    var data = await _channel.invokeMethod('apdu',command);
-//    if(data['code']!=null){
-//      throw new NfcError(code: data['code']);
-//    }
-//    return data['res'];
-//  }
+  /// is nfc is available and is enabled ?
+  static Future<bool> isEnabled(){
+    if(Platform.isAndroid){
+      return _channel.invokeMethod('isEnabled');
+    }
+    return new Future.value(false);
+  }
+
+  /// startup the nfc system listener
+  static Future startup() async  {
+    if(!_inited){
+      _channel.setMethodCallHandler(handler);
+    }
+    var res = await _channel.invokeMethod('startup');
+    if(res['code'] != null){
+      throw new NfcError(code: res['code']);
+    }else{
+      _isStartup = true;
+    }
+
+  }
+
+
+  /// stop listen nfc events
+  static Future shutdown() async{
+    await _channel.invokeMethod('shutdown');
+    _isStartup = false;
+  }
+
 
 
 

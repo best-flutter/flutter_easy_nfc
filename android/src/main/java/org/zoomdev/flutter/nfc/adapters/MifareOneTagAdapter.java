@@ -1,14 +1,8 @@
 package org.zoomdev.flutter.nfc.adapters;
 
 import android.nfc.Tag;
-import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.TagTechnology;
-
-import org.zoomdev.flutter.nfc.AbsNfcTagAdapter;
-import org.zoomdev.flutter.nfc.NfcTagAdapter;
-
-import java.io.IOException;
 
 public class MifareOneTagAdapter extends AbsNfcTagAdapter<MifareClassic> {
 

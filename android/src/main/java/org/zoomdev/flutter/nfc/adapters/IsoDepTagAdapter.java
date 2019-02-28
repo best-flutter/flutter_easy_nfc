@@ -5,14 +5,6 @@ import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.TagTechnology;
 
-import org.zoomdev.flutter.nfc.AbsNfcTagAdapter;
-import org.zoomdev.flutter.nfc.HexUtil;
-import org.zoomdev.flutter.nfc.NfcException;
-import org.zoomdev.flutter.nfc.NfcResponse;
-import org.zoomdev.flutter.nfc.NfcTagAdapter;
-
-import java.io.IOException;
-
 public class IsoDepTagAdapter extends AbsNfcTagAdapter<IsoDep> {
 
 

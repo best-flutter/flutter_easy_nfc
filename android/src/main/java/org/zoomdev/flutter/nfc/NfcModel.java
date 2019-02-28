@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Parcelable;
 
 import org.zoomdev.flutter.nfc.adapters.IsoDepTagAdapter;
+import org.zoomdev.flutter.nfc.adapters.NfcTagAdapter;
 
 
 public class NfcModel {

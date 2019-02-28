@@ -1,4 +1,4 @@
-package org.zoomdev.flutter.nfc;
+package org.zoomdev.flutter.nfc.adapters;
 
 import android.nfc.Tag;
 import android.nfc.tech.TagTechnology;

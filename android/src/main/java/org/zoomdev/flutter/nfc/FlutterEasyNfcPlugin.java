@@ -3,9 +3,12 @@ package org.zoomdev.flutter.nfc;
 import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
+import android.nfc.tech.IsoDep;
+import android.nfc.tech.MifareClassic;
 
 import org.zoomdev.flutter.nfc.adapters.IsoDepTagAdapter;
 import org.zoomdev.flutter.nfc.adapters.MifareOneTagAdapter;
+import org.zoomdev.flutter.nfc.adapters.NfcTagAdapter;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,13 +46,14 @@ public class FlutterEasyNfcPlugin implements MethodCallHandler, NfcAdapterListen
 
     private final Registrar registrar;
 
-    private  NfcTagAdapter tagAdapter;
+    private NfcTagAdapter tagAdapter;
 
 
     public static final String NOT_AVALIABLE = "1";
     private static final String NOT_ENABLED = "2";
     public static final String NOT_INITIALIZED = "3";
     public static final String IO = "4";
+    public static final String IN_CORRECT_METHOD = "5";
 
     public FlutterEasyNfcPlugin(Registrar registrar, MethodChannel channel) {
         this.activity = registrar.activity();
@@ -60,12 +64,19 @@ public class FlutterEasyNfcPlugin implements MethodCallHandler, NfcAdapterListen
     @Override
     public synchronized void onMethodCall(MethodCall call, Result result) {
         String method = call.method;
-        if ("close".equals(method)) {
-            close(result);
+
+        if ("transceive".equals(method)) {
+            transceive((String) call.arguments, result);
         }else if ("connect".equals(method)) {
             connect(result);
-        }else if ("isAvaliable".equals(method)) {
-            result.success(isAvaliable());
+        }else if ("connect".equals(method)) {
+            connect(result);
+        }else if ("connect".equals(method)) {
+            connect(result);
+        }else if ("connect".equals(method)) {
+            connect(result);
+        }else if ("isAvailable".equals(method)) {
+            result.success(isAvailable());
         }else if ("isEnabled".equals(method)) {
             result.success(isEnabled());
         } else if ("startup".equals(method)) {
@@ -84,8 +95,65 @@ public class FlutterEasyNfcPlugin implements MethodCallHandler, NfcAdapterListen
         }
     }
 
+    abstract class IsoDepNfcExector extends  NfcExector<IsoDep>{
 
-    public boolean isAvaliable(){
+        @Override
+        IsoDep get(NfcTagAdapter tagAdapter) {
+            if(tagAdapter.getTag() instanceof IsoDep){
+                return (IsoDep) tagAdapter.getTag();
+            }
+            return null;
+        }
+    }
+
+    abstract class MifareClassicNfcExecutor extends NfcExector<MifareClassic>{
+        @Override
+        MifareClassic get(NfcTagAdapter tagAdapter) {
+            if(tagAdapter.getTag() instanceof MifareClassic){
+                return (MifareClassic) tagAdapter.getTag();
+            }
+            return null;
+        }
+    }
+
+    abstract class NfcExector<T>{
+
+        abstract T get(NfcTagAdapter tagAdapter);
+
+
+        void handle(Result result){
+            if(tagAdapter==null){
+                processError(NOT_INITIALIZED,"",result);
+                return;
+            }
+
+            T tag = get(tagAdapter);
+            if(tag==null){
+                processError(IN_CORRECT_METHOD,"",result);
+            }else{
+                try {
+                    Object data = execute(tag);
+                    result.success(data);
+                } catch (IOException e) {
+                    processError(IO,"",result);
+                }
+            }
+        }
+
+        abstract Object execute(T tag) throws IOException;
+    }
+
+    private void transceive(final String data, final Result result) {
+        new IsoDepNfcExector() {
+            @Override
+            Object execute(IsoDep isoDep) throws IOException {
+               return HexUtil.encodeHexStr(isoDep.transceive(HexUtil.decodeHex(data)));
+            }
+        }.handle(result);
+    }
+
+
+    public boolean isAvailable(){
         return NfcAdapter.getDefaultAdapter(activity)!=null;
     }
 
@@ -180,66 +248,113 @@ public class FlutterEasyNfcPlugin implements MethodCallHandler, NfcAdapterListen
     }
 
 
-//    public void apdu(String command,Result promise) {
-//        if(isoDepTagAdapter!=null){
-//            try {
-//                isoDepTagAdapter.connect();
-//                NfcResponse response = isoDepTagAdapter.send(command);
-//                Map<String,Object> data = new HashMap<>();
-//                data.put("res",response.getStr());
-//                promise.success(data);
-//            } catch (IOException e) {f
-//                processError("io","io",promise);
-//            } catch (NfcException e) {
-//                processError("nfc","nfc",promise);
-//            }
-//        }else{
-//            processError("init","Not supported",promise);
-//        }
-//    }
 
 
-//    public void authenticateSectorWithKeyA(int sectorIndex, String key) throws IOException {
-//        this.mifareOneTagAdapter.authenticateSectorWithKeyA(sectorIndex, HexUtil.decodeHex(key));
-//    }
-//
-//    public void authenticateSectorWithKeyB(int sectorIndex, byte[] key) throws IOException {
-//        this.mifareOneTagAdapter.authenticateSectorWithKeyB(sectorIndex, key);
-//    }
-//
-//    public byte[] readBlock(int block) throws IOException {
-//        return this.mifareOneTagAdapter.readBlock(block);
-//    }
-//
-//    public int getBlockCount() {
-//        return this.mifareOneTagAdapter.getBlockCount();
-//    }
-//
-//    public int getSectorCount() {
-//        return this.mifareOneTagAdapter.getSectorCount();
-//    }
-//
-//    public void writeBlock(int block, byte[] bytes) throws IOException {
-//        this.mifareOneTagAdapter.writeBlock(block, bytes);
-//    }
-//
-//
-//    public void transfer(int block) throws IOException {
-//        this.mifareOneTagAdapter.transfer(block);
-//    }
-//
-//    public void restore(int block) throws IOException {
-//        this.mifareOneTagAdapter.restore(block);
-//    }
-//
-//    public void increment(int block, int value) throws IOException {
-//        this.mifareOneTagAdapter.increment(block, value);
-//    }
-//
-//
-//    public void decrement(int block, int value) throws IOException {
-//        this.mifareOneTagAdapter.decrement(block, value);
-//    }
+    public void authenticateSectorWithKeyA(final int sectorIndex, final String key, Result result) throws IOException {
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                return tag.authenticateSectorWithKeyA(sectorIndex, HexUtil.decodeHex(key));
+            }
+        }.handle(result);
+
+    }
+
+    public void authenticateSectorWithKeyB(final int sectorIndex, final byte[] key, Result result) throws IOException {
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                return   tag.authenticateSectorWithKeyB(sectorIndex, key);
+            }
+        }.handle(result);
+      
+    }
+
+    public void readBlock(final int block, Result result) {
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                return tag.readBlock(block);
+            }
+        }.handle(result);
+    }
+
+    public void getBlockCount(Result result) {
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                return tag.getBlockCount();
+            }
+        }.handle(result);
+
+    }
+
+    public void getSectorCount( Result result) {
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                return tag.getSectorCount();
+            }
+        }.handle(result);
+
+    }
+
+    public void writeBlock(final int block, final byte[] bytes, Result result) {
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                  tag.writeBlock(block, bytes);
+                return null;
+            }
+        }.handle(result);
+
+    }
+
+
+    public void transfer(final int block, Result result){
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                tag.transfer(block);
+                return null;
+            }
+        }.handle(result);
+
+    }
+
+    public void restore(final int block, Result result){
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                  tag.restore(block);
+                return null;
+            }
+        }.handle(result);
+
+    }
+
+    public void increment(final int block, final int value, Result result)  {
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                tag.increment(block, value);
+                return null;
+            }
+        }.handle(result);
+
+    }
+
+
+    public void decrement(final int block, final int value, Result result){
+        new MifareClassicNfcExecutor() {
+            @Override
+            Object execute(MifareClassic tag) throws IOException {
+                 tag.decrement(block, value);
+                return null;
+            }
+        }.handle(result);
+
+    }
 
 
     private void processError(String code,String message,Result promise){

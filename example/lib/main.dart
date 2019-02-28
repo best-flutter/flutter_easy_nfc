@@ -13,14 +13,15 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
+
 
   @override
   void initState() {
     super.initState();
     FlutterEasyNfc.startup();
+    WidgetsBinding.instance.addObserver(this);
     FlutterEasyNfc.onNfcEvent((NfcEvent event) async{
-
       if(event.tag is IsoDep){
         IsoDep isoDep = event.tag;
         await isoDep.transceive("00a40000023f00");
@@ -31,9 +32,6 @@ class _MyAppState extends State<MyApp> {
         print(file05);
         print(file15);
       }
-
-
-
 
     });
 
