@@ -61,21 +61,26 @@ public class FlutterEasyNfcPlugin implements MethodCallHandler, NfcAdapterListen
         this.registrar = registrar;
     }
 
+    void test(byte[] bytes){
+    }
+
     @Override
     public synchronized void onMethodCall(MethodCall call, Result result) {
         String method = call.method;
 
+
+
         if ("transceive".equals(method)) {
-            transceive((String) call.arguments, result);
+            transceive((byte[]) call.arguments, result);
         } else if ("authenticateSectorWithKeyA".equals(method)) {
             Map map = (Map) call.arguments;
             int sectorIndex = (int) map.get("sectorIndex");
-            String key = (String) map.get("key");
+            byte[] key = (byte[]) map.get("key");
             authenticateSectorWithKeyA(sectorIndex,key, result);
         } else if ("authenticateSectorWithKeyB".equals(method)) {
             Map map = (Map) call.arguments;
             int sectorIndex = (int) map.get("sectorIndex");
-            String key = (String) map.get("key");
+            byte[] key = (byte[]) map.get("key");
             authenticateSectorWithKeyB(sectorIndex,key,result);
         } else if ("readBlock".equals(method)) {
             Map map = (Map) call.arguments;
@@ -84,8 +89,8 @@ public class FlutterEasyNfcPlugin implements MethodCallHandler, NfcAdapterListen
         } else if ("writeBlock".equals(method)) {
             Map map = (Map) call.arguments;
             int block = (int) map.get("block");
-            String data = (String)map.get("data");
-            writeBlock(block,HexUtil.decodeHex(data),result);
+            byte[] data = (byte[])map.get("data");
+            writeBlock(block,data,result);
         } else if ("transfer".equals(method)) {
             Map map = (Map) call.arguments;
             int block = (int) map.get("block");
@@ -182,11 +187,11 @@ public class FlutterEasyNfcPlugin implements MethodCallHandler, NfcAdapterListen
         abstract Object execute(T tag) throws IOException;
     }
 
-    private void transceive(final String data, final Result result) {
+    private void transceive(final byte[] data, final Result result) {
         new IsoDepNfcExector() {
             @Override
             Object execute(IsoDep isoDep) throws IOException {
-                return HexUtil.encodeHexStr(isoDep.transceive(HexUtil.decodeHex(data)));
+                return isoDep.transceive(data);
             }
         }.handle(result);
     }
@@ -287,21 +292,21 @@ public class FlutterEasyNfcPlugin implements MethodCallHandler, NfcAdapterListen
     }
 
 
-    public void authenticateSectorWithKeyA(final int sectorIndex, final String key, Result result) {
+    public void authenticateSectorWithKeyA(final int sectorIndex, final byte[] key, Result result) {
         new MifareClassicNfcExecutor() {
             @Override
             Object execute(MifareClassic tag) throws IOException {
-                return tag.authenticateSectorWithKeyA(sectorIndex, HexUtil.decodeHex(key));
+                return tag.authenticateSectorWithKeyA(sectorIndex, key);
             }
         }.handle(result);
 
     }
 
-    public void authenticateSectorWithKeyB(final int sectorIndex, final String key, Result result) {
+    public void authenticateSectorWithKeyB(final int sectorIndex, final byte[] key, Result result) {
         new MifareClassicNfcExecutor() {
             @Override
             Object execute(MifareClassic tag) throws IOException {
-                return tag.authenticateSectorWithKeyB(sectorIndex, HexUtil.decodeHex(key));
+                return tag.authenticateSectorWithKeyB(sectorIndex, key);
             }
         }.handle(result);
 
@@ -311,7 +316,7 @@ public class FlutterEasyNfcPlugin implements MethodCallHandler, NfcAdapterListen
         new MifareClassicNfcExecutor() {
             @Override
             Object execute(MifareClassic tag) throws IOException {
-                return HexUtil.encodeHexStr(tag.readBlock(block));
+                return tag.readBlock(block);
             }
         }.handle(result);
     }

@@ -41,8 +41,6 @@ public class IsoDepTagAdapter extends AbsNfcTagAdapter<IsoDep> {
         this.isoDep = isoDep;
     }
 
-//    public NfcResponse send(String apdu) throws IOException, NfcException {
-//        return (new NfcResponse(this.isoDep.transceive(HexUtil.decodeHex(apdu)))).validate();
-//    }
+
 
 }

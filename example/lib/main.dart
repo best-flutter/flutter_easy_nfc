@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -13,20 +15,20 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     FlutterEasyNfc.startup();
-    WidgetsBinding.instance.addObserver(this);
     FlutterEasyNfc.onNfcEvent((NfcEvent event) async {
       if (event.tag is IsoDep) {
         IsoDep isoDep = event.tag;
         await isoDep.connect();
         await isoDep.transceive("00a40000023f00");
-        String file05 = await isoDep.transceive("00b0850000");
+        Uint8List file05 = await isoDep.transceive("00b0850000");
         await isoDep.transceive("00a40000023f01");
-        String file15 = await isoDep.transceive("00b0950000");
+        Uint8List file15 = await isoDep.transceive("00b0950000");
         await isoDep.close();
         print(file05);
         print(file15);
@@ -51,7 +53,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           title: const Text('Plugin example app'),
         ),
         body: new Center(
-          child: new Text("请帖卡"),
+          child: new Text("请帖交通部卡或m1卡"),
         ),
       ),
     );

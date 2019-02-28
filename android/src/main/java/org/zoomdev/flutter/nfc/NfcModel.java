@@ -13,29 +13,14 @@ import android.os.Parcelable;
 import org.zoomdev.flutter.nfc.adapters.IsoDepTagAdapter;
 import org.zoomdev.flutter.nfc.adapters.NfcTagAdapter;
 
-
 public class NfcModel {
-
-
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private String[][] techLists;
     private IntentFilter[] filters;
     private NfcAdapterListener adapterListener;
-
     private NfcTagAdapter adapter;
-
     NfcTagAdapter.TagAdapterFactory[] factories;
-
-
-    public static NfcTagAdapter.TagAdapterFactory createByName(String className) throws ClassNotFoundException {
-
-        if ("android.nfc.tech.IsoDep".equals(className)) {
-            return new IsoDepTagAdapter.Factory();
-        }
-
-        throw new ClassNotFoundException("Class name " + className + " is not supported!");
-    }
 
 
     public <T extends NfcTagAdapter> T getAdapter() {
@@ -133,7 +118,6 @@ public class NfcModel {
         if (this.nfcAdapter != null) {
             this.nfcAdapter.disableForegroundDispatch(context);
         }
-
     }
 
     public void destroy() {
