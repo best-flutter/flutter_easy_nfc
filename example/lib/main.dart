@@ -13,16 +13,14 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
-
-
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
     FlutterEasyNfc.startup();
     WidgetsBinding.instance.addObserver(this);
-    FlutterEasyNfc.onNfcEvent((NfcEvent event) async{
-      if(event.tag is IsoDep){
+    FlutterEasyNfc.onNfcEvent((NfcEvent event) async {
+      if (event.tag is IsoDep) {
         IsoDep isoDep = event.tag;
         await isoDep.connect();
         await isoDep.transceive("00a40000023f00");
@@ -32,7 +30,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
         await isoDep.close();
         print(file05);
         print(file15);
-      }else if(event.tag is MifareClassic){
+      } else if (event.tag is MifareClassic) {
         MifareClassic m1 = event.tag;
         await m1.connect();
         await m1.authenticateSectorWithKeyA(0, "A0A1A2A3A4A5");
@@ -41,13 +39,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
         print(await m1.readBlock(2));
         print(await m1.readBlock(3));
         await m1.close();
-
       }
-
     });
-
   }
-
 
   @override
   Widget build(BuildContext context) {
